@@ -1,11 +1,13 @@
+@import "@/styles/_variables.scss";
+
 #header {
   background: rgb(51,100,125);
   background: linear-gradient(0deg, rgba(51,100,125,1) 0%, rgba(70,137,171,1) 100%);
   box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, .2);
   color: #fff;
-  height: 100px;
+  height: $headerHeight;
   margin: 0;
-  padding: 10px;
+  padding: $headerHeight / 10;
   position: relative;
   z-index: 10;
   -moz-box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, .2);
@@ -19,13 +21,15 @@
 
     .logoWrapper {
       background: rgba(0, 0, 0, .2);
-      border-radius: 50px;
-      height: 100px;
+      border-radius: ($headerHeight - $headerHeight / 10) / 1;
+      height: $headerHeight;
       margin-right: 10px;
-      width: 100px;
+      width: $headerHeight;
 
       img {
-        margin: 10px;
+        height: $headerHeight - ($headerHeight / 10 * 2);
+        width: $headerHeight - ($headerHeight / 10 * 2);
+        margin: $headerHeight / 10;
       }
     }
 
