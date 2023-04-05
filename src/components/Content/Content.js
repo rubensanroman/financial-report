@@ -8,7 +8,7 @@ const Content = () => {
       </aside>
       <main id={styles.main}>
         <div className={styles.inner}>
-          <table>
+          <table width="100%">
             <thead>
               <tr>
                 <th>Oct 2022</th>
@@ -18,6 +18,15 @@ const Content = () => {
                 <th>Feb 2023</th>
               </tr>
             </thead>
+            <tbody>
+              <tr>
+                <td width="20%">1</td>
+                <td width="20%">2</td>
+                <td width="20%">3</td>
+                <td width="20%">4</td>
+                <td width="20%">5</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </main>
