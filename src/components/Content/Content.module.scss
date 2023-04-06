@@ -117,6 +117,13 @@
             -webkit-box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, .05);            
           }
 
+          &.clickable {
+            &:hover {
+              background: rgba(245, 231, 211, .5);
+              cursor: pointer;
+            }
+          }
+
           &:last-child {
             border-right: 0;
           }
@@ -127,10 +134,10 @@
 }
 
 #modal {
-  background: #ff0;
+  background: #fff;
   border-radius: 10px;
-  box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, .4);
-  height: 500px;
+  box-shadow: 0px 0px 150px 0px rgba(0, 0, 0, .6);
+  height: 350px;
   left: 50%;
   margin-left: -250px;
   margin-top: -250px;
@@ -138,8 +145,8 @@
   top: 50%;
   width: 500px;
   z-index: 1000;
-  -moz-box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, .4);
-  -webkit-box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, .4);
+  -moz-box-shadow: 0px 0px 150px 0px rgba(0, 0, 0, .6);
+  -webkit-box-shadow: 0px 0px 150px 0px rgba(0, 0, 0, .6);
 
   .closeModal {
     background-color: #000;
@@ -156,6 +163,39 @@
       height: 34px;
       margin: 3px;
       width: 34px;
+    }
+  }
+
+  header {
+    background-color: green;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+    
+    h1 {
+      margin: 0;
+    }
+  }
+
+  ul.transactionsList {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 40px auto 0;
+    width: 400px;
+    
+    li {
+      background: rgba(255, 255, 255, .5);
+      border: 1px rgba(0, 0, 0, .2) solid;
+      margin-bottom: 10px;
+      padding: 20px 0;
+      text-indent: 15px;
+
+      span {
+        float: right;
+        margin-right: 15px;
+      }
     }
   }
 }

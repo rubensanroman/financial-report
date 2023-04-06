@@ -6,7 +6,7 @@ const Content = () => {
   const [banks, setBanks] = useState({ isOpen: true, list: {} });
   const [expenses, setExpenses] = useState({ isOpen: true, list: {} });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeTransactions, setActiveTransactions] = useState([]);
+  const [activeTransactions, setActiveTransactions] = useState({});
 
   useEffect(() => {
     fetch("/api/banks")
@@ -51,8 +51,9 @@ const Content = () => {
     }, 0);
   };
 
-  const handleViewTransactions = (transactionsList) => {
+  const handleViewTransactions = (expensesBalance, transactionsList) => {
     setIsModalOpen(true);
+    setActiveTransactions({ balance: expensesBalance, list: transactionsList });
   };
 
   return (
@@ -147,7 +148,12 @@ const Content = () => {
                         <td
                           className={styles.clickable}
                           key={index}
-                          onClick={() => handleViewTransactions()}
+                          onClick={() =>
+                            handleViewTransactions(
+                              item.balance,
+                              item.transactions
+                            )
+                          }
                         >
                           {item.balance}
                         </td>
@@ -175,7 +181,16 @@ const Content = () => {
           >
             <FaRegTimesCircle />
           </div>
-          <h1>Modal!</h1>
+          <header>
+            <h1>{activeTransactions.balance}</h1>
+          </header>
+          <ul className={styles.transactionsList}>
+            {activeTransactions.list.map((transaction) => (
+              <li key={transaction.id}>
+                {transaction.name} <span>{transaction.balance}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </>
