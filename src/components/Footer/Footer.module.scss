@@ -1,7 +1,7 @@
 @import "@/styles/_variables.scss";
 
 #footer {
-  background: rgba(0, 0, 0, .5);
+  background: #666;
   bottom: 0;
   display: block;
   height: $footerHeight;
@@ -9,6 +9,7 @@
   position: absolute;
   text-align: center;
   width: 100%;
+  z-index: 20;
 
   p {
     color: #fff;

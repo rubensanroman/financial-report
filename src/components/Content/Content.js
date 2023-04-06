@@ -1,64 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Content.module.scss";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
 const Content = () => {
-  const [banks, setBanks] = useState({
-    isOpen: true,
-    list: {
-      "First Republic Savings": [
-        { month: "Oct2022", balance: 0 },
-        { month: "Nov2022", balance: 0 },
-        { month: "Dec2022", balance: 13897 },
-        { month: "Jan2023", balance: 0 },
-        { month: "Feb2023", balance: 0 },
-      ],
-      "Chase Checking": [
-        { month: "Oct2022", balance: 0 },
-        { month: "Nov2022", balance: 0 },
-        { month: "Dec2022", balance: 1567 },
-        { month: "Jan2023", balance: 0 },
-        { month: "Feb2023", balance: 0 },
-      ],
-    },
-  });
-  /*
-  const [income, setIncome] = useState({});
-  const [cogs, setCogs] = useState([]);
-  */
-  const [expenses, setExpenses] = useState({
-    isOpen: true,
-    list: {
-      "Bank Charge & Fees": [
-        { month: "Oct2022", balance: -100 },
-        { month: "Nov2022", balance: 0 },
-        { month: "Dec2022", balance: 0 },
-        { month: "Jan2023", balance: 0 },
-        { month: "Feb2023", balance: 0 },
-      ],
-      "Legal Services": [
-        { month: "Oct2022", balance: -600 },
-        { month: "Nov2022", balance: 0 },
-        { month: "Dec2022", balance: 0 },
-        { month: "Jan2023", balance: 0 },
-        { month: "Feb2023", balance: 0 },
-      ],
-      "Taxes & Licenses": [
-        { month: "Oct2022", balance: -300 },
-        { month: "Nov2022", balance: 0 },
-        { month: "Dec2022", balance: 0 },
-        { month: "Jan2023", balance: 0 },
-        { month: "Feb2023", balance: 0 },
-      ],
-      "Office Supplies & Software": [
-        { month: "Oct2022", balance: -200 },
-        { month: "Nov2022", balance: 0 },
-        { month: "Dec2022", balance: 0 },
-        { month: "Jan2023", balance: 0 },
-        { month: "Feb2023", balance: 0 },
-      ],
-    },
-  });
+  const [banks, setBanks] = useState({ isOpen: true, list: {} });
+  const [expenses, setExpenses] = useState({ isOpen: true, list: {} });
+
+  useEffect(() => {
+    fetch("/api/banks")
+      .then((res) => res.json())
+      .then((data) => {
+        setBanks((prevState) => ({
+          ...prevState,
+          list: data,
+        }));
+      });
+    fetch("/api/expenses")
+      .then((res) => res.json())
+      .then((data) => {
+        setExpenses((prevState) => ({
+          ...prevState,
+          list: data,
+        }));
+      });
+  }, []);
 
   const getUniqueMonths = (data) => {
     const months = [
@@ -75,6 +40,7 @@ const Content = () => {
   const sumBalances = (data, month) =>
     Object.keys(data.list).reduce((total, bank) => {
       const entry = data.list[bank].find((entry) => entry.month === month);
+
       if (entry) {
         return total + entry.balance;
       } else {
@@ -108,18 +74,6 @@ const Content = () => {
               </ul>
             )}
           </li>
-          {/*
-            <li className={styles.dropdown}>
-              <h3>
-                Income <FaAngleDown />
-              </h3>
-            </li>
-            <li className={styles.dropdown}>
-              <h3>
-                COGS (Cost of Goods Sold) <FaAngleDown />
-              </h3>
-            </li>
-          */}
           <li className={styles.dropdown}>
             <h3
               onClick={() =>
@@ -145,60 +99,58 @@ const Content = () => {
         </ul>
       </aside>
       <main id={styles.main}>
-        <div className={styles.inner}>
-          <table width="100%">
-            <thead>
-              <tr>
-                <th>Oct 2022</th>
-                <th>Nov 2022</th>
-                <th>Dec 2022</th>
-                <th>Jan 2023</th>
-                <th>Feb 2023</th>
-              </tr>
-            </thead>
-            <tbody>
-              {banks.isOpen && (
-                <>
-                  {Object.keys(banks.list).map((key) => (
-                    <tr key={key}>
-                      {banks.list[key].map((item, index) => (
-                        <td key={index}>{item.balance}</td>
-                      ))}
-                    </tr>
-                  ))}
-                  <tr>
-                    {getUniqueMonths(banks).map((month, index) => (
-                      <td className={styles.special} key={index}>
-                        {sumBalances(banks, month)}
-                      </td>
+        <table width="100%">
+          <thead>
+            <tr>
+              <th>Oct 2022</th>
+              <th>Nov 2022</th>
+              <th>Dec 2022</th>
+              <th>Jan 2023</th>
+              <th>Feb 2023</th>
+            </tr>
+          </thead>
+          <tbody>
+            {banks.isOpen && (
+              <>
+                {Object.keys(banks.list).map((key) => (
+                  <tr key={key}>
+                    {banks.list[key].map((item, index) => (
+                      <td key={index}>{item.balance}</td>
                     ))}
                   </tr>
-                </>
-              )}
-              <tr>
-                <td className={styles.separator} colSpan={5}></td>
-              </tr>
-              {expenses.isOpen && (
-                <>
-                  {Object.keys(expenses.list).map((key) => (
-                    <tr key={key}>
-                      {expenses.list[key].map((item, index) => (
-                        <td key={index}>{item.balance}</td>
-                      ))}
-                    </tr>
+                ))}
+                <tr>
+                  {getUniqueMonths(banks).map((month, index) => (
+                    <td className={styles.special} key={index}>
+                      {sumBalances(banks, month)}
+                    </td>
                   ))}
-                  <tr>
-                    {getUniqueMonths(expenses).map((month, index) => (
-                      <td className={styles.special} key={index}>
-                        {sumBalances(expenses, month)}
-                      </td>
+                </tr>
+              </>
+            )}
+            <tr>
+              <td className={styles.separator} colSpan={5}></td>
+            </tr>
+            {expenses.isOpen && (
+              <>
+                {Object.keys(expenses.list).map((key) => (
+                  <tr key={key}>
+                    {expenses.list[key].map((item, index) => (
+                      <td key={index}>{item.balance}</td>
                     ))}
                   </tr>
-                </>
-              )}
-            </tbody>
-          </table>
-        </div>
+                ))}
+                <tr>
+                  {getUniqueMonths(expenses).map((month, index) => (
+                    <td className={styles.special} key={index}>
+                      {sumBalances(expenses, month)}
+                    </td>
+                  ))}
+                </tr>
+              </>
+            )}
+          </tbody>
+        </table>
       </main>
     </main>
   );

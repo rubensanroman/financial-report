@@ -17,6 +17,7 @@
     box-shadow: inset -5px 0px 20px 0px rgba(0,0,0,0.1);
     font-size: 0.9em;
     left: 0;
+    overflow: auto;
     position: absolute;
     top: 0;
     width: $sidebarWidth;
@@ -66,59 +67,58 @@
   }
 
   #main {
+    bottom: 0;
+    top: 0;
     left: $sidebarWidth;
+    overflow: auto;
     position: absolute;
     right: 0;
 
-    .inner {
-      background: #fff;
+    table {
+      border-collapse: collapse;
+      width: 100%;
 
-      table {
-        border-collapse: collapse;
-        width: 100%;
+      thead {
+        margin: 0;
+        padding: 0;
 
-        thead {
-          margin: 0;
-          padding: 0;
+        th {
+          background: rgba(0, 0, 0, .5);
+          border-bottom: 1px rgba(0, 0, 0, .1) solid;
+          border-right: 1px rgba(0, 0, 0, .1) solid;
+          box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, .15);
+          color: white;
+          height: $rowHeight;
+          -moz-box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, .15);
+          -webkit-box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, .15);          
 
-          th {
-            background: rgba(0, 0, 0, .5);
-            border-bottom: 1px rgba(0, 0, 0, .1) solid;
-            border-right: 1px rgba(0, 0, 0, .1) solid;
-            box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, .15);
-            color: white;
-            height: $rowHeight;
-            -moz-box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, .15);
-            -webkit-box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, .15);          
-
-            &:last-child {
-              border-right: 0;
-            }
+          &:last-child {
+            border-right: 0;
           }
         }
+      }
 
-        tbody {
-          td {
-            border-bottom: 1px rgba(0, 0, 0, .1) solid;
-            border-right: 1px rgba(0, 0, 0, .2) solid;
-            height: $rowHeight;
-            text-align: center;
-            width: 20%;
+      tbody {
+        td {
+          border-bottom: 1px rgba(0, 0, 0, .1) solid;
+          border-right: 1px rgba(0, 0, 0, .2) solid;
+          height: $rowHeight;
+          text-align: center;
+          width: 20%;
 
-            &.special {
-              background-color: #ecedb3;
-              font-weight: bold;
-            }
+          &.special {
+            background-color: #ecedb3;
+            font-weight: bold;
+          }
 
-            &.separator {
-              box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, .05);
-              -moz-box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, .05);
-              -webkit-box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, .05);            
-            }
+          &.separator {
+            box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, .05);
+            -moz-box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, .05);
+            -webkit-box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, .05);            
+          }
 
-            &:last-child {
-              border-right: 0;
-            }
+          &:last-child {
+            border-right: 0;
           }
         }
       }
