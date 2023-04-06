@@ -22,21 +22,59 @@ const Content = () => {
       ],
     },
   });
-  const [income, setIncome] = useState([]);
+  /*
+  const [income, setIncome] = useState({});
   const [cogs, setCogs] = useState([]);
-  const [expenses, setExpenses] = useState([]);
+  */
+  const [expenses, setExpenses] = useState({
+    isOpen: true,
+    list: {
+      "Bank Charge & Fees": [
+        { month: "Oct2022", balance: -100 },
+        { month: "Nov2022", balance: 0 },
+        { month: "Dec2022", balance: 0 },
+        { month: "Jan2023", balance: 0 },
+        { month: "Feb2023", balance: 0 },
+      ],
+      "Legal Services": [
+        { month: "Oct2022", balance: -600 },
+        { month: "Nov2022", balance: 0 },
+        { month: "Dec2022", balance: 0 },
+        { month: "Jan2023", balance: 0 },
+        { month: "Feb2023", balance: 0 },
+      ],
+      "Taxes & Licenses": [
+        { month: "Oct2022", balance: -300 },
+        { month: "Nov2022", balance: 0 },
+        { month: "Dec2022", balance: 0 },
+        { month: "Jan2023", balance: 0 },
+        { month: "Feb2023", balance: 0 },
+      ],
+      "Office Supplies & Software": [
+        { month: "Oct2022", balance: -200 },
+        { month: "Nov2022", balance: 0 },
+        { month: "Dec2022", balance: 0 },
+        { month: "Jan2023", balance: 0 },
+        { month: "Feb2023", balance: 0 },
+      ],
+    },
+  });
 
-  const months = [
-    ...new Set(
-      Object.values(banks.list).flatMap((bank) =>
-        bank.map((entry) => entry.month)
-      )
-    ),
-  ];
+  const getUniqueMonths = (data) => {
+    const months = [
+      ...new Set(
+        Object.values(data.list).flatMap((item) =>
+          item.map((entry) => entry.month)
+        )
+      ),
+    ];
 
-  const sumBalances = (month) =>
-    Object.keys(banks.list).reduce((total, bank) => {
-      const entry = banks.list[bank].find((entry) => entry.month === month);
+    return months;
+  };
+
+  const sumBalances = (data, month) =>
+    Object.keys(data.list).reduce((total, bank) => {
+      const entry = data.list[bank].find((entry) => entry.month === month);
       if (entry) {
         return total + entry.balance;
       } else {
@@ -70,20 +108,39 @@ const Content = () => {
               </ul>
             )}
           </li>
+          {/*
+            <li className={styles.dropdown}>
+              <h3>
+                Income <FaAngleDown />
+              </h3>
+            </li>
+            <li className={styles.dropdown}>
+              <h3>
+                COGS (Cost of Goods Sold) <FaAngleDown />
+              </h3>
+            </li>
+          */}
           <li className={styles.dropdown}>
-            <h3>
-              Income <FaAngleDown />
+            <h3
+              onClick={() =>
+                setExpenses((prevState) => ({
+                  ...prevState,
+                  isOpen: !prevState.isOpen,
+                }))
+              }
+            >
+              Expenses {expenses.isOpen ? <FaAngleUp /> : <FaAngleDown />}
             </h3>
-          </li>
-          <li className={styles.dropdown}>
-            <h3>
-              COGS (Cost of Goods Sold) <FaAngleDown />
-            </h3>
-          </li>
-          <li className={styles.dropdown}>
-            <h3>
-              Expenses <FaAngleDown />
-            </h3>
+            {expenses.isOpen === true && (
+              <ul>
+                {Object.keys(expenses.list).map((key) => (
+                  <li key={key}>{key}</li>
+                ))}
+                <li>
+                  <strong>Total Balance</strong>
+                </li>
+              </ul>
+            )}
           </li>
         </ul>
       </aside>
@@ -110,9 +167,30 @@ const Content = () => {
                     </tr>
                   ))}
                   <tr>
-                    {months.map((month, index) => (
+                    {getUniqueMonths(banks).map((month, index) => (
                       <td className={styles.special} key={index}>
-                        {sumBalances(month)}
+                        {sumBalances(banks, month)}
+                      </td>
+                    ))}
+                  </tr>
+                </>
+              )}
+              <tr>
+                <td colSpan={5}></td>
+              </tr>
+              {expenses.isOpen && (
+                <>
+                  {Object.keys(expenses.list).map((key) => (
+                    <tr key={key}>
+                      {expenses.list[key].map((item, index) => (
+                        <td key={index}>{item.balance}</td>
+                      ))}
+                    </tr>
+                  ))}
+                  <tr>
+                    {getUniqueMonths(expenses).map((month, index) => (
+                      <td className={styles.special} key={index}>
+                        {sumBalances(expenses, month)}
                       </td>
                     ))}
                   </tr>

@@ -49,11 +49,17 @@
             right: 10px;
             top: 15px;
           }
+
+          &:hover {
+            background: rgba(255, 255, 255, .5);
+            cursor: pointer;
+          }
         }
 
         li {
           border-bottom: 1px rgba(0, 0, 0, .2) solid;
           height: $rowHeight + 2;
+          opacity: 0.6;
         }
       }
     }
