@@ -1,23 +1,26 @@
 import { useState } from "react";
 import styles from "./Content.module.scss";
-import { FaAngleDown } from "react-icons/fa";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
 const Content = () => {
   const [banks, setBanks] = useState({
-    "First Republic Savings": [
-      { month: "Oct2022", balance: 10 },
-      { month: "Nov2022", balance: 0 },
-      { month: "Dec2022", balance: 13897 },
-      { month: "Jan2023", balance: 12 },
-      { month: "Feb2023", balance: 0 },
-    ],
-    "Chase Checking": [
-      { month: "Oct2022", balance: 1780 },
-      { month: "Nov2022", balance: 0 },
-      { month: "Dec2022", balance: 1567 },
-      { month: "Jan2023", balance: 0 },
-      { month: "Feb2023", balance: 0 },
-    ],
+    isOpen: true,
+    list: {
+      "First Republic Savings": [
+        { month: "Oct2022", balance: 10 },
+        { month: "Nov2022", balance: 0 },
+        { month: "Dec2022", balance: 13897 },
+        { month: "Jan2023", balance: 12 },
+        { month: "Feb2023", balance: 0 },
+      ],
+      "Chase Checking": [
+        { month: "Oct2022", balance: 1780 },
+        { month: "Nov2022", balance: 0 },
+        { month: "Dec2022", balance: 1567 },
+        { month: "Jan2023", balance: 0 },
+        { month: "Feb2023", balance: 0 },
+      ],
+    },
   });
   const [income, setIncome] = useState([]);
   const [cogs, setCogs] = useState([]);
@@ -25,13 +28,15 @@ const Content = () => {
 
   const months = [
     ...new Set(
-      Object.values(banks).flatMap((bank) => bank.map((entry) => entry.month))
+      Object.values(banks.list).flatMap((bank) =>
+        bank.map((entry) => entry.month)
+      )
     ),
   ];
 
   const sumBalances = (month) =>
-    Object.keys(banks).reduce((total, bank) => {
-      const entry = banks[bank].find((entry) => entry.month === month);
+    Object.keys(banks.list).reduce((total, bank) => {
+      const entry = banks.list[bank].find((entry) => entry.month === month);
       if (entry) {
         return total + entry.balance;
       } else {
@@ -44,17 +49,26 @@ const Content = () => {
       <aside id={styles.sidebar}>
         <ul>
           <li className={styles.dropdown}>
-            <h3>
-              Banks <FaAngleDown />
+            <h3
+              onClick={() =>
+                setBanks((prevState) => ({
+                  ...prevState,
+                  isOpen: !prevState.isOpen,
+                }))
+              }
+            >
+              Banks {banks.isOpen ? <FaAngleUp /> : <FaAngleDown />}
             </h3>
-            <ul>
-              {Object.keys(banks).map((key) => (
-                <li key={key}>{key}</li>
-              ))}
-              <li>
-                <strong>Total Balance</strong>
-              </li>
-            </ul>
+            {banks.isOpen === true && (
+              <ul>
+                {Object.keys(banks.list).map((key) => (
+                  <li key={key}>{key}</li>
+                ))}
+                <li>
+                  <strong>Total Balance</strong>
+                </li>
+              </ul>
+            )}
           </li>
           <li className={styles.dropdown}>
             <h3>
@@ -86,20 +100,24 @@ const Content = () => {
               </tr>
             </thead>
             <tbody>
-              {Object.keys(banks).map((key) => (
-                <tr key={key}>
-                  {banks[key].map((item, index) => {
-                    return <td key={index}>{item.balance}</td>;
-                  })}
-                </tr>
-              ))}
-              <tr>
-                {months.map((month, index) => (
-                  <td className={styles.special} key={index}>
-                    {sumBalances(month)}
-                  </td>
-                ))}
-              </tr>
+              {banks.isOpen && (
+                <>
+                  {Object.keys(banks.list).map((key) => (
+                    <tr key={key}>
+                      {banks.list[key].map((item, index) => (
+                        <td key={index}>{item.balance}</td>
+                      ))}
+                    </tr>
+                  ))}
+                  <tr>
+                    {months.map((month, index) => (
+                      <td className={styles.special} key={index}>
+                        {sumBalances(month)}
+                      </td>
+                    ))}
+                  </tr>
+                </>
+              )}
             </tbody>
           </table>
         </div>
