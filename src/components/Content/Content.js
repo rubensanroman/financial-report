@@ -7,14 +7,14 @@ const Content = () => {
     isOpen: true,
     list: {
       "First Republic Savings": [
-        { month: "Oct2022", balance: 10 },
+        { month: "Oct2022", balance: 0 },
         { month: "Nov2022", balance: 0 },
         { month: "Dec2022", balance: 13897 },
-        { month: "Jan2023", balance: 12 },
+        { month: "Jan2023", balance: 0 },
         { month: "Feb2023", balance: 0 },
       ],
       "Chase Checking": [
-        { month: "Oct2022", balance: 1780 },
+        { month: "Oct2022", balance: 0 },
         { month: "Nov2022", balance: 0 },
         { month: "Dec2022", balance: 1567 },
         { month: "Jan2023", balance: 0 },
@@ -176,7 +176,7 @@ const Content = () => {
                 </>
               )}
               <tr>
-                <td colSpan={5}></td>
+                <td className={styles.separator} colSpan={5}></td>
               </tr>
               {expenses.isOpen && (
                 <>
