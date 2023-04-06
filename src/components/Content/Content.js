@@ -51,9 +51,19 @@ const Content = () => {
     }, 0);
   };
 
-  const handleViewTransactions = (expensesBalance, transactionsList) => {
+  const handleViewTransactions = (
+    expensesType,
+    expensesMonth,
+    expensesBalance,
+    transactionsList
+  ) => {
     setIsModalOpen(true);
-    setActiveTransactions({ balance: expensesBalance, list: transactionsList });
+    setActiveTransactions({
+      balance: expensesBalance,
+      month: expensesMonth,
+      list: transactionsList,
+      type: expensesType,
+    });
   };
 
   return (
@@ -150,6 +160,8 @@ const Content = () => {
                           key={index}
                           onClick={() =>
                             handleViewTransactions(
+                              key,
+                              item.month,
                               item.balance,
                               item.transactions
                             )
@@ -182,15 +194,23 @@ const Content = () => {
             <FaRegTimesCircle />
           </div>
           <header>
-            <h1>{activeTransactions.balance}</h1>
+            <h1>
+              {activeTransactions.type} &nbsp;&nbsp;/&nbsp;&nbsp;{" "}
+              {activeTransactions.month}
+            </h1>
           </header>
-          <ul className={styles.transactionsList}>
-            {activeTransactions.list.map((transaction) => (
-              <li key={transaction.id}>
-                {transaction.name} <span>{transaction.balance}</span>
-              </li>
-            ))}
-          </ul>
+          <main className={styles.mainContent}>
+            <ul className={styles.transactionsList}>
+              {activeTransactions.list.map((transaction) => (
+                <li key={transaction.id}>
+                  {transaction.name} <strong>{transaction.balance}</strong>
+                </li>
+              ))}
+            </ul>
+          </main>
+          <footer>
+            Total Expenses <span>{activeTransactions.balance}</span>
+          </footer>
         </div>
       )}
     </>
